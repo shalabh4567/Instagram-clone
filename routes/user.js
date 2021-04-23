@@ -98,9 +98,39 @@ router.put("/updatepic", requireLogin, (req, res) => {
       if (err) {
         return res.status(422).json({ error: "Pic cannot be posted" });
       }
-      res.json(result)
+      res.json(result);
     }
   );
+});
+
+router.post("/search-users", (req, res) => {
+  let userPattern = new RegExp("^" + req.body.query);
+  User.find({ email: { $regex: userPattern } })
+    .select("_id email")
+    .then((user) => {
+      res.json({ user });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+router.delete("/deleteaccount", (req, res) => {
+  User.findById({ _id: req.body.deleteId })
+    .then((user) => {
+      console.log(user);
+      //res.json({user: user})
+      Post.deleteMany({postedBy: user._id})
+      .then(() => {
+        user.remove()
+        .then(()=> {
+          res.json({message: "account deleted"})
+        })
+      })
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
 module.exports = router;

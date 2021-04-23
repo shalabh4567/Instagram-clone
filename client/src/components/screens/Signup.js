@@ -11,9 +11,10 @@ const Signin = () => {
   const [url, setUrl] = useState(undefined);
 
   useEffect(() => {
-    if(url){
-      uploadFields();    }
-  },[url])
+    if (url) {
+      uploadFields();
+    }
+  }, [url]);
 
   const uploadPic = () => {
     const data = new FormData();
@@ -51,7 +52,7 @@ const Signin = () => {
         name: name,
         email: email,
         password: password,
-        pic: url
+        pic: url,
       }),
     })
       .then((res) => res.json())
@@ -73,7 +74,7 @@ const Signin = () => {
     // console.log(name, email, password)
     if (image) {
       uploadPic();
-    }else {
+    } else {
       uploadFields();
     }
   };
@@ -122,6 +123,9 @@ const Signin = () => {
         <h5>
           <Link to="/signin">Already have an account ?</Link>
         </h5>
+        <h6>
+          <Link to="/reset">forgot password</Link>
+        </h6>
       </div>
     </div>
   );

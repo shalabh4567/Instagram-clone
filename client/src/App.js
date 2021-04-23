@@ -8,25 +8,26 @@ import Signup from "./components/screens/Signup";
 import Profile from "./components/screens/Profile";
 import Createpost from "./components/screens/Createpost";
 import UserProfile from "./components/screens/UserProfile";
-import SubscribedPost from "./components/screens/SubscribedUserPost"
+import SubscribedPost from "./components/screens/SubscribedUserPost";
+import Reset from "./components/screens/Reset";
+import NewPassword from "./components/screens/Newpassword";
 import { reducer, initialState } from "./reducers/userReducer";
 
 export const UserContext = createContext();
 
 const Routing = () => {
   const history = useHistory();
-  const {state, dispatch} = useContext(UserContext)
+  const { state, dispatch } = useContext(UserContext);
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"))
-    if(user){
-      dispatch({type: "USER", payload: user})
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      dispatch({ type: "USER", payload: user });
       //history.push("/")
-    }else {
-      history.push("/signin")
+    } else {
+      if (!history.location.pathname.startsWith("/reset"))
+        history.push("/signin");
     }
-  },[])
-
-
+  }, []);
 
   return (
     <Switch>
@@ -51,6 +52,12 @@ const Routing = () => {
       <Route path="/myfollowingpost">
         <SubscribedPost />
       </Route>
+      <Route exact path="/reset">
+        <Reset />
+      </Route>
+      <Route path="/reset/:token">
+        <NewPassword />
+      </Route>
     </Switch>
   );
 };
@@ -58,7 +65,7 @@ const Routing = () => {
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
   return (
-    <UserContext.Provider value={{state, dispatch}}>
+    <UserContext.Provider value={{ state, dispatch }}>
       <BrowserRouter>
         <Navbar />
         <Routing />
