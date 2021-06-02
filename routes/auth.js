@@ -11,7 +11,6 @@ const nodemailer = require("nodemailer");
 const sendgridtransport = require("nodemailer-sendgrid-transport");
 const { SEND_GRID, EMAIL, SEND_MAILID } = require("../config/keys");
 
-//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
 
 const transporter = nodemailer.createTransport(
   sendgridtransport({
